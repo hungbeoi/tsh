@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Toán Thông Tin Sinh Nhật và Tên</title>
+    <script>
+        function chuyenKhongDauVaVietHoa(str) {
+            // Chuyển đổi chuỗi có dấu thành chuỗi không dấu và viết hoa
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+        }
+
+        function chuyenChuCaiSangPythagoras(char) {
+            // Hệ thống số Pythagoras
+            var heSo = {
+                A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, I: 9, J: 1,
+                K: 2, L: 3, M: 4, N: 5, O: 6, P: 7, Q: 8, R: 9, S: 1, T: 2,
+                U: 3, V: 4, W: 5, X: 6, Y: 7, Z: 8
+            };
+
+            return heSo[char] || 0; // Trả về giá trị hệ số Pythagoras của chữ cái hoặc 0 nếu không tìm thấy
+        }
+
+        function tinhToan() {
+            // Lấy giá trị từ ô input sinh nhật và tên
+            var sinhNhat = document.getElementById("sinhNhat").value;
+            var ten = document.getElementById("ten").value; 
+
+            // Chuyển hết tên về không dấu và viết hoa
+            var tenKhongDau = chuyenKhongDauVaVietHoa(ten);
+
+            // Tính các số trong sinh nhật
+            var tongSinhNhat = 0;
+            for (var i = 0; i < sinhNhat.length; i++) {
+                if (!isNaN(parseInt(sinhNhat[i]))) {
+                    tongSinhNhat += parseInt(sinhNhat[i]);
+                }
+            }
+
+            // Tính tổng Pythagoras các chữ cái trong tên
+            var tongPythagorasChuCai = 0;
+            for (var j = 0; j < tenKhongDau.length; j++) {
+                if (tenKhongDau[j] >= 'A' && tenKhongDau[j] <= 'Z') {
+                    tongPythagorasChuCai += chuyenChuCaiSangPythagoras(tenKhongDau[j]);
+                }
+            }
+
+            // Tính tổng Pythagoras các nguyên âm trong tên
+            var tongPythagorasNguyenAm = 0;
+            var nguyenAm = "AEIOU";
+            for (var k = 0; k < tenKhongDau.length; k++) {
+                if (nguyenAm.indexOf(tenKhongDau[k]) !== -1) {
+                    tongPythagorasNguyenAm += chuyenChuCaiSangPythagoras(tenKhongDau[k]);
+                }
+            }
+
+            // Tính tổng phụ âm trong tên
+            var tongPhuAm = tongPythagorasChuCai - tongPythagorasNguyenAm;
+
+            // Hiển thị kết quả dưới dạng bảng
+            var table = "<table border='1'><tr><th>Mục</th><th>Kết Quả</th></tr>";
+            table += "<tr><td>Chỉ số bài học đường đời</td><td>" + tongSinhNhat + "</td></tr>";
+            table += "<tr><td>Chỉ số năng lực tự nhiên</td><td>" + tongPythagorasChuCai + "</td></tr>";
+            table += "<tr><td>Động lực thỏa mãn</td><td>" + tongPythagorasNguyenAm + "</td></tr>";
+            table += "<tr><td>Chỉ số thái độ bên ngoài</td><td>" + tongPhuAm + "</td></tr>";
+            table += "</table>";
+
+            document.getElementById("ketQua").innerHTML = table;
+        }
+
+        function enterKeyPressed(event) {
+            if (event.keyCode === 13) {
+                // Kiểm tra nếu phím Enter được nhấn, gọi hàm tinhToan
+                tinhToan();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Tính Toán Thông Tin Sinh Nhật và Tên</h1>
+
+    <label for="sinhNhat">Ngày sinh (DD/MM/YYYY):</label>
+    <input type="text" id="sinhNhat" placeholder="DD/MM/YYYY">
+
+    <label for="ten">Họ và tên:</label>
+    <input type="text" id="ten" onkeypress="enterKeyPressed(event)">
+
+    <button onclick="tinhToan()">Tính Toán</button>
+
+    <div id="ketQua"></div>
+</body>
+</html>
