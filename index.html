@@ -3,7 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tính Toán Thông Tin Sinh Nhật và Tên</title>
+    <title>HùngĐZ</title>
+    <style>
+        body {
+            background-color: #008000;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #ffffff;
+            color: #008000;
+            padding: 10px;
+        }
+
+        table {
+            border: 1px solid #ffffff;
+            border-collapse: collapse;
+            margin: auto;
+        }
+
+        th, td {
+            border: 1px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            text-align: center;
+        }
+
+        button {
+            display: block;
+            margin: 10px auto;
+            padding: 10px;
+            background-color: #ffffff;
+            color: #008000;
+            border: none;
+            cursor: pointer;
+        }
+
+        #ketQua {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
     <script>
         function chuyenKhongDauVaVietHoa(str) {
             // Chuyển đổi chuỗi có dấu thành chuỗi không dấu và viết hoa
@@ -23,8 +75,8 @@
 
         function tinhToan() {
             // Lấy giá trị từ ô input sinh nhật và tên
+            var ten = document.getElementById("ten").value;
             var sinhNhat = document.getElementById("sinhNhat").value;
-            var ten = document.getElementById("ten").value; 
 
             // Chuyển hết tên về không dấu và viết hoa
             var tenKhongDau = chuyenKhongDauVaVietHoa(ten);
@@ -57,12 +109,20 @@
             // Tính tổng phụ âm trong tên
             var tongPhuAm = tongPythagorasChuCai - tongPythagorasNguyenAm;
 
+            // Lấy năm hiện tại
+            var namHienTai = new Date().getFullYear();
+
+            // Tính số năm cận hành
+            var soNamCanhan = parseInt(sinhNhat.slice(-4)) + tongSinhNhat + tongPythagorasChuCai + tongPythagorasNguyenAm + tongPhuAm + namHienTai + 1;
+
             // Hiển thị kết quả dưới dạng bảng
-            var table = "<table border='1'><tr><th>Mục</th><th>Kết Quả</th></tr>";
+            var table = "<table>";
+            table += "<tr><th>Mục</th><th>Kết Quả</th></tr>";
             table += "<tr><td>Chỉ số bài học đường đời</td><td>" + tongSinhNhat + "</td></tr>";
             table += "<tr><td>Chỉ số năng lực tự nhiên</td><td>" + tongPythagorasChuCai + "</td></tr>";
             table += "<tr><td>Động lực thỏa mãn</td><td>" + tongPythagorasNguyenAm + "</td></tr>";
             table += "<tr><td>Chỉ số thái độ bên ngoài</td><td>" + tongPhuAm + "</td></tr>";
+            table += "<tr><td>Số năm cận hành</td><td>" + soNamCanhan + "</td></tr>";
             table += "</table>";
 
             document.getElementById("ketQua").innerHTML = table;
@@ -77,13 +137,13 @@
     </script>
 </head>
 <body>
-    <h1>Tính Toán Thông Tin Sinh Nhật và Tên</h1>
-
-    <label for="sinhNhat">Ngày sinh (DD/MM/YYYY):</label>
-    <input type="text" id="sinhNhat" placeholder="DD/MM/YYYY">
+    <h1>HùngĐZ - Tính Toán Thông Tin Sinh Nhật và Tên</h1>
 
     <label for="ten">Họ và tên:</label>
-    <input type="text" id="ten" onkeypress="enterKeyPressed(event)">
+    <input type="text" id="ten" onkeypress="enterKeyPressed(event)" style="text-align: center;">
+
+    <label for="sinhNhat">Ngày sinh (DD/MM/YYYY):</label>
+    <input type="text" id="sinhNhat" placeholder="DD/MM/YYYY" style="text-align: center;" onkeypress="enterKeyPressed(event)">
 
     <button onclick="tinhToan()">Tính Toán</button>
 
